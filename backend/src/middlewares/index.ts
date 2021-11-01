@@ -1,5 +1,5 @@
 export {}
-const ErrorHandlingMiddleware = require('./ErrorHandlingMiddleware')
+const ErrorHandlingMiddleware = require('./errorHandlingMiddleware')
 const FileUpload = require('./fileUpload')
 
 module.exports = {
