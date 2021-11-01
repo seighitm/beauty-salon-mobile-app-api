@@ -17,7 +17,7 @@ app.use('/api', router)
 app.use(express.static(path.resolve(__dirname, 'uploads')))
 
 mongoose.connect(
-    process.env.DB_CONNECT, {
+    process.env.DB_URL, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     })
