@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
 const app = express();
+const {ErrorHandlingMiddleware} = require('./src/middlewares')
 
 require("dotenv").config();
 require('./src/models');
@@ -20,6 +21,8 @@ mongoose.connect(
     })
     .then(() => console.log('MongoDB Connected'))
     .catch((err: any) => console.log(err));
+
+app.use(ErrorHandlingMiddleware)
 
 const PORT: number | string = process.env.PORT || 7000;
 
