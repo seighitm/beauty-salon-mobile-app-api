@@ -18,4 +18,6 @@ router.post("/register", [
     ],
     AuthController.register);
 
+router.post("/updateToStaffAcc/:id", AuthController.updateToStaffAccountType);
+
 module.exports = router

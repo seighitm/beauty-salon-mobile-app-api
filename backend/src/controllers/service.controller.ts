@@ -7,8 +7,6 @@ const Category = require("../models/category.model");
 
 class ServiceController {
     async create(req: Request, res: Response, next: NextFunction) {
-        console.log(req.body)
-
         const {name, description, price, duration, categoryId} = req.body
 
         await Service.create({name, description, price, duration})

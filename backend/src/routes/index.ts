@@ -8,7 +8,7 @@ const notificationsRouter = require('./notifications.routes')
 router.use('/auth', authRouter)
 router.use('/services', servicesRouter)
 router.use('/categories', categoriesRouter)
-router.use('/booking', bookingsRouter)
+router.use('/bookings', bookingsRouter)
 router.use('/notification', notificationsRouter)
 
 module.exports = router

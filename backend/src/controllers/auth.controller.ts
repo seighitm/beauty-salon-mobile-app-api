@@ -108,6 +108,18 @@ class AuthController {
             return next(ApiError.internal(e.message));
         }
     };
+
+    async updateToStaffAccountType(req: Request, res: Response, next: NextFunction) {
+        const {id} = req.params;
+
+        await User.findByIdAndUpdate(id, {
+            role: "ADMIN"
+        }).then((data: IUser) => {
+            res.send(data)
+        }).catch((err) => {
+            return next(ApiError.internal(err.message));
+        });
+    }
 }
 
 module.exports = new AuthController()
