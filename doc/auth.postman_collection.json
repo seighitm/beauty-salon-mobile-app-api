@@ -1,0 +1,134 @@
+{
+	"info": {
+		"_postman_id": "0a61fcaa-c1fc-4661-ad63-aebe5f565dc1",
+		"name": "auth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "register",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwibmFtZSI6Im5hbWUiLCJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJnZW5kZXIiOiJtYWxlIiwiY3JlYXRlZEF0IjoiMjAyMS0xMC0wM1QyMDoyNTowNC42MTRaIiwidXBkYXRlZEF0IjoiMjAyMS0xMC0wM1QyMDoyNTowNC42MTRaIiwiaWF0IjoxNjMzMjkzNDMzLCJleHAiOjE2MzM0NjYyMzN9.mFs6EkbDFxlgnG_xxnrJu0tYBecQsDe4QW3ahgtGwvE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "user",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "user@mail.ru",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "user_password",
+							"type": "text"
+						},
+						{
+							"key": "role",
+							"value": "ADMIN",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "numberPhone",
+							"value": "0725419785",
+							"type": "text"
+						},
+						{
+							"key": "photo",
+							"type": "file",
+							"src": []
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"user\",\r\n    \"password\": \"user_password\",\r\n    \"email\": \"user@mail.ru\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateToStaffAcc",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/auth/updateToStaffAcc/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"updateToStaffAcc",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

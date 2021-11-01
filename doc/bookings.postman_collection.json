@@ -1,0 +1,133 @@
+{
+	"info": {
+		"_postman_id": "bdb745f0-dd31-4b21-8ab8-948d3439eb14",
+		"name": "bookings",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "getAllBookings",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZkZmZmZmZmZmRmZiIsIl9pZCI6IjYxNzI5OTY3MjVjODZkNzIwODVjNWVlMiIsInJvbGUiOiJhZG1pbiIsInVzZXJuYW1lIjoiZGhmYWZkZmRmZmZmZmRkZmRoZmZkYSIsImlhdCI6MTYzNDkwMDMyNywiZXhwIjoxNjM0OTg2NzI3fQ.VmUmbsqG3pbPYqZR2NV3YwQyHByjVl2jqHWduVRgYqI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxNzBhNWJhODQzMzdkN2NkM2Q5ZWZjOCIsImlhdCI6MTY zNDc3MjQxNCwiZXhwIjoxNjM0ODU4ODE0fQ.qJHI67ePjZiaSXE95qrsO0SsMzMsV0aaLLndW3W1aMQ",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/bookings",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"bookings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getOneBooking",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZkZmZmZmZmZmRmZiIsIl9pZCI6IjYxNzI5OTY3MjVjODZkNzIwODVjNWVlMiIsInJvbGUiOiJhZG1pbiIsInVzZXJuYW1lIjoiZGhmYWZkZmRmZmZmZmRkZmRoZmZkYSIsImlhdCI6MTYzNDkwMDMyNywiZXhwIjoxNjM0OTg2NzI3fQ.VmUmbsqG3pbPYqZR2NV3YwQyHByjVl2jqHWduVRgYqI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxNzBhNWJhODQzMzdkN2NkM2Q5ZWZjOCIsImlhdCI6MTY zNDc3MjQxNCwiZXhwIjoxNjM0ODU4ODE0fQ.qJHI67ePjZiaSXE95qrsO0SsMzMsV0aaLLndW3W1aMQ",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/bookings/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"bookings",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addBookings",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZkZmZmZmZmZmRmZiIsIl9pZCI6IjYxNzI5OTY3MjVjODZkNzIwODVjNWVlMiIsInJvbGUiOiJhZG1pbiIsInVzZXJuYW1lIjoiZGhmYWZkZmRmZmZmZmRkZmRoZmZkYSIsImlhdCI6MTYzNDkwMDMyNywiZXhwIjoxNjM0OTg2NzI3fQ.VmUmbsqG3pbPYqZR2NV3YwQyHByjVl2jqHWduVRgYqI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxNzBhNWJhODQzMzdkN2NkM2Q5ZWZjOCIsImlhdCI6MTY zNDc3MjQxNCwiZXhwIjoxNjM0ODU4ODE0fQ.qJHI67ePjZiaSXE95qrsO0SsMzMsV0aaLLndW3W1aMQ",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\": \"61800e033d4f63019d28b539\",\r\n    \"serviceId\": \"61800ec04e4c36ca7fcce1ca\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/bookings",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"bookings"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
