@@ -7,10 +7,13 @@ router.post("/", [
     body("clientId").isMongoId().withMessage("Wrong CLIENT_ID format!"),
     body("serviceId").isMongoId().withMessage("Wrong SERVICE_ID format!")
 ], BookingController.create);
+
 router.get("/", BookingController.getAll);
+
 router.get("/:id", [
     param("id").isMongoId().withMessage("Wrong ID format!")
 ], BookingController.getOne)
+
 router.put("/:id", [
     param("id").isMongoId().withMessage("Wrong ID format!")
 ], BookingController.closeBooking)

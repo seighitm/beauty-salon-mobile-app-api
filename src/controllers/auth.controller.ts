@@ -23,7 +23,7 @@ class AuthController {
         const photo = req.file?.filename
 
         try {
-            if (!email || !password || !username){
+            if (!email || !password || !username) {
                 return next(ApiError.badRequest('Please enter all fields!'));
             }
 
@@ -35,7 +35,7 @@ class AuthController {
                 return next(ApiError.internal(err.message));
             });
 
-            if (candidate){
+            if (candidate) {
                 return next(ApiError.badRequest("User already exists [with email or numberPhone]!"))
             }
 
@@ -70,7 +70,7 @@ class AuthController {
         const {email, password} = req.body
 
         try {
-            if (!email || !password){
+            if (!email || !password) {
                 return next(ApiError.badRequest('Please enter all fields!'));
             }
 
@@ -81,7 +81,7 @@ class AuthController {
                     return next(ApiError.internal(err.message));
                 });
 
-            if (!user){
+            if (!user) {
                 return next(ApiError.badRequest("User does not exist!"));
             }
 
@@ -100,20 +100,6 @@ class AuthController {
             return next(ApiError.internal(e.message));
         }
     };
-
-    async updateToStaffAccountType(req: Request, res: Response, next: NextFunction) {
-        const {id} = req.params;
-
-        ObjectUtils.checkValuesFormat(req, next);
-
-        await User.findByIdAndUpdate(id, {
-            role: "ADMIN"
-        }).then((data: IUser) => {
-            res.send(data)
-        }).catch((err) => {
-            return next(ApiError.internal(err.message));
-        });
-    }
 }
 
 module.exports = new AuthController()

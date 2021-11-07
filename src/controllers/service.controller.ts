@@ -47,6 +47,19 @@ class ServiceController {
                 return next(ApiError.internal(err.message))
             });
     }
+
+    deleteOne(req: Request, res: Response, next: NextFunction) {
+        const {id} = req.params;
+
+        ObjectUtils.checkValuesFormat(req, next);
+
+        Service.findByIdAndDelete(id)
+            .then((data: IService) => {
+                res.send(data);
+            }).catch(err => {
+            return next(ApiError.badRequest(err.message));
+        });
+    }
 }
 
 module.exports = new ServiceController()

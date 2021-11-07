@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "33b797d6-e8ee-4123-895e-001fa52f97e3",
+		"_postman_id": "cf83027f-ea1b-42a0-a35a-0689dce02ab0",
 		"name": "services",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -16,19 +16,13 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZkZmZmZmZmZmRmZiIsIl9pZCI6IjYxNzI5OTY3MjVjODZkNzIwODVjNWVlMiIsInJvbGUiOiJhZG1pbiIsInVzZXJuYW1lIjoiZGhmYWZkZmRmZmZmZmRkZmRoZmZkYSIsImlhdCI6MTYzNDkwMDMyNywiZXhwIjoxNjM0OTg2NzI3fQ.VmUmbsqG3pbPYqZR2NV3YwQyHByjVl2jqHWduVRgYqI",
+							"value": "",
 							"type": "string"
 						}
 					]
 				},
 				"method": "GET",
-				"header": [
-					{
-						"key": "x-access-token",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxNzBhNWJhODQzMzdkN2NkM2Q5ZWZjOCIsImlhdCI6MTY zNDc3MjQxNCwiZXhwIjoxNjM0ODU4ODE0fQ.qJHI67ePjZiaSXE95qrsO0SsMzMsV0aaLLndW3W1aMQ",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": "",
@@ -64,19 +58,13 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZkZmZmZmZmZmRmZiIsIl9pZCI6IjYxNzI5OTY3MjVjODZkNzIwODVjNWVlMiIsInJvbGUiOiJhZG1pbiIsInVzZXJuYW1lIjoiZGhmYWZkZmRmZmZmZmRkZmRoZmZkYSIsImlhdCI6MTYzNDkwMDMyNywiZXhwIjoxNjM0OTg2NzI3fQ.VmUmbsqG3pbPYqZR2NV3YwQyHByjVl2jqHWduVRgYqI",
+							"value": "",
 							"type": "string"
 						}
 					]
 				},
 				"method": "GET",
-				"header": [
-					{
-						"key": "x-access-token",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxNzBhNWJhODQzMzdkN2NkM2Q5ZWZjOCIsImlhdCI6MTY zNDc3MjQxNCwiZXhwIjoxNjM0ODU4ODE0fQ.qJHI67ePjZiaSXE95qrsO0SsMzMsV0aaLLndW3W1aMQ",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": "",
@@ -116,22 +104,16 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTdkNzhiMTNkMWI2YzA1NjVjYWVkMzYiLCJyb2xlIjoiQURNSU4iLCJlbWFpbCI6ImFzZGR4ZmNzZGZAbWFpbC5ydXMiLCJ1c2VybmFtZSI6InF3ZXIiLCJpYXQiOjE2MzU2MTk2NjMsImV4cCI6MTYzNTcwNjA2M30.X2w3qbyCPkrXbhnxkg7Lu5hov9p-4DhUUH41RndXzJ4",
+							"value": "",
 							"type": "string"
 						}
 					]
 				},
 				"method": "POST",
-				"header": [
-					{
-						"key": "x-access-token",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxNzBhNWJhODQzMzdkN2NkM2Q5ZWZjOCIsImlhdCI6MTY zNDc3MjQxNCwiZXhwIjoxNjM0ODU4ODE0fQ.qJHI67ePjZiaSXE95qrsO0SsMzMsV0aaLLndW3W1aMQ",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"service_name\",\r\n    \"description\": \"service_description\",\r\n    \"price\": 45,\r\n    \"duration\": \"45 min\",\r\n    \"categoryId\": \"617c8a0d2f9079e22b4fe087\"\r\n}",
+					"raw": "{\r\n    \"name\": \"service_name\",\r\n    \"description\": \"service_description\",\r\n    \"price\": 55,\r\n    \"duration\": 44,\r\n    \"categoryId\": \"61881d9606ab6e13e080a5b6\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -139,7 +121,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/services",
+					"raw": "http://localhost:8080/api/services/",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -147,7 +129,54 @@
 					"port": "8080",
 					"path": [
 						"api",
-						"services"
+						"services",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteOne",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/services/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"services",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": null
+						}
 					]
 				}
 			},

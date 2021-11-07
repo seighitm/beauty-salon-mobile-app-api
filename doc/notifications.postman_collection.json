@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e748c2ec-6db1-4078-955c-c2829df53516",
+		"_postman_id": "91594cd2-8544-4784-b60a-07882d0e27eb",
 		"name": "notifications",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -16,19 +16,13 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZkZmZmZmZmZmRmZiIsIl9pZCI6IjYxNzI5OTY3MjVjODZkNzIwODVjNWVlMiIsInJvbGUiOiJhZG1pbiIsInVzZXJuYW1lIjoiZGhmYWZkZmRmZmZmZmRkZmRoZmZkYSIsImlhdCI6MTYzNDkwMDMyNywiZXhwIjoxNjM0OTg2NzI3fQ.VmUmbsqG3pbPYqZR2NV3YwQyHByjVl2jqHWduVRgYqI",
+							"value": "",
 							"type": "string"
 						}
 					]
 				},
 				"method": "GET",
-				"header": [
-					{
-						"key": "x-access-token",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxNzBhNWJhODQzMzdkN2NkM2Q5ZWZjOCIsImlhdCI6MTY zNDc3MjQxNCwiZXhwIjoxNjM0ODU4ODE0fQ.qJHI67ePjZiaSXE95qrsO0SsMzMsV0aaLLndW3W1aMQ",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"staffId\": \"6171dc60a7818ba7a64b0160\",\r\n    \"clientId\": \"6179e1d5131a0dc454cf396b\",\r\n    \"message\": \"Hah hah ahsah hash a\"\r\n}",
@@ -64,22 +58,62 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZkZmZmZmZmZmRmZiIsIl9pZCI6IjYxNzI5OTY3MjVjODZkNzIwODVjNWVlMiIsInJvbGUiOiJhZG1pbiIsInVzZXJuYW1lIjoiZGhmYWZkZmRmZmZmZmRkZmRoZmZkYSIsImlhdCI6MTYzNDkwMDMyNywiZXhwIjoxNjM0OTg2NzI3fQ.VmUmbsqG3pbPYqZR2NV3YwQyHByjVl2jqHWduVRgYqI",
+							"value": "",
 							"type": "string"
 						}
 					]
 				},
 				"method": "GET",
-				"header": [
-					{
-						"key": "x-access-token",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxNzBhNWJhODQzMzdkN2NkM2Q5ZWZjOCIsImlhdCI6MTY zNDc3MjQxNCwiZXhwIjoxNjM0ODU4ODE0fQ.qJHI67ePjZiaSXE95qrsO0SsMzMsV0aaLLndW3W1aMQ",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"staffId\": \"6171dc60a7818ba7a64b0160\",\r\n    \"clientId\": \"6179e1d5131a0dc454cf396b\",\r\n    \"message\": \"Hah hah ahsah hash a\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/notifications/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"notifications",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteOne",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"staffId\": \"6171dc60a7818ba7a64b0160\",\r\n    \"clientId\": \"6179e1d5131a0dc454cf396b\",\r\n    \"message\": \"message\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -116,19 +150,13 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZkZmZmZmZmZmRmZiIsIl9pZCI6IjYxNzI5OTY3MjVjODZkNzIwODVjNWVlMiIsInJvbGUiOiJhZG1pbiIsInVzZXJuYW1lIjoiZGhmYWZkZmRmZmZmZmRkZmRoZmZkYSIsImlhdCI6MTYzNDkwMDMyNywiZXhwIjoxNjM0OTg2NzI3fQ.VmUmbsqG3pbPYqZR2NV3YwQyHByjVl2jqHWduVRgYqI",
+							"value": "",
 							"type": "string"
 						}
 					]
 				},
 				"method": "POST",
-				"header": [
-					{
-						"key": "x-access-token",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxNzBhNWJhODQzMzdkN2NkM2Q5ZWZjOCIsImlhdCI6MTY zNDc3MjQxNCwiZXhwIjoxNjM0ODU4ODE0fQ.qJHI67ePjZiaSXE95qrsO0SsMzMsV0aaLLndW3W1aMQ",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"staffId\": \"6171dc60a7818ba7a64b0160\",\r\n    \"clientId\": \"6179e1d5131a0dc454cf396b\",\r\n    \"message\": \"message\"\r\n}",

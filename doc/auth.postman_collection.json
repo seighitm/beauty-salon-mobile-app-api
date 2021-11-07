@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "0a61fcaa-c1fc-4661-ad63-aebe5f565dc1",
+		"_postman_id": "743758ae-4570-4828-92d3-cbdd74818eb8",
 		"name": "auth",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -13,7 +13,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwibmFtZSI6Im5hbWUiLCJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJnZW5kZXIiOiJtYWxlIiwiY3JlYXRlZEF0IjoiMjAyMS0xMC0wM1QyMDoyNTowNC42MTRaIiwidXBkYXRlZEF0IjoiMjAyMS0xMC0wM1QyMDoyNTowNC42MTRaIiwiaWF0IjoxNjMzMjkzNDMzLCJleHAiOjE2MzM0NjYyMzN9.mFs6EkbDFxlgnG_xxnrJu0tYBecQsDe4QW3ahgtGwvE",
+							"value": "",
 							"type": "string"
 						}
 					]
@@ -46,7 +46,7 @@
 						},
 						{
 							"key": "numberPhone",
-							"value": "0725419785",
+							"value": "0454654",
 							"type": "text"
 						},
 						{
@@ -97,34 +97,6 @@
 						"api",
 						"auth",
 						"login"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "updateToStaffAcc",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/api/auth/updateToStaffAcc/:id",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"auth",
-						"updateToStaffAcc",
-						":id"
-					],
-					"variable": [
-						{
-							"key": "id",
-							"value": null
-						}
 					]
 				}
 			},

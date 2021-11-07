@@ -17,18 +17,18 @@ class CategoryController {
         if (!filename)
             return next(ApiError.badRequest("Error! No photo added!!"))
 
-        await Category.create(
-            {name, photo: filename}
-        ).then((data: ICategory) => {
-            res.status(200).send(data)
-        }).catch((err) => {
-            return next(ApiError.badRequest(err.message));
-        });
+        await Category.create({name, photo: filename})
+            .then((data: ICategory) => {
+                res.status(200).send(data)
+            }).catch((err) => {
+                return next(ApiError.badRequest(err.message));
+            });
     }
 
     async getAll(req: Request, res: Response, next: NextFunction) {
         await Category.find({})
             .populate({path: "services"})
+            .populate({path: "staffs"})
             .then((data: ICategory) => {
                 res.status(200).send(data);
             }).catch(err => {
@@ -41,13 +41,14 @@ class CategoryController {
 
         ObjectUtils.checkValuesFormat(req, next);
 
-        await Category.find(
-            {_id: id}
-        ).then((data: ICategory) => {
-            res.send(data);
-        }).catch(err => {
-            return next(ApiError.badRequest(err.message));
-        });
+        await Category.find({_id: id})
+            .populate({path: "services"})
+            .populate({path: "staffs"})
+            .then((data: ICategory) => {
+                res.send(data);
+            }).catch(err => {
+                return next(ApiError.badRequest(err.message));
+            });
     }
 
     addStaffToCategoryServices(req: Request, res: Response, next: NextFunction) {
@@ -58,6 +59,19 @@ class CategoryController {
         Category.findByIdAndUpdate(categoryId,
             {$push: {staffs: staffId}},
             {new: true, useFindAndModify: false})
+            .then((data: ICategory) => {
+                res.send(data);
+            }).catch(err => {
+            return next(ApiError.badRequest(err.message));
+        });
+    }
+
+    deleteOne(req: Request, res: Response, next: NextFunction) {
+        const {id} = req.params;
+
+        ObjectUtils.checkValuesFormat(req, next);
+
+        Category.findByIdAndDelete(id)
             .then((data: ICategory) => {
                 res.send(data);
             }).catch(err => {

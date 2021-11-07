@@ -15,8 +15,5 @@ router.post("/register", [
     body('username').isLength({min: 3, max: 32}).withMessage("Error! Exceeded USERNAME length!"),
 ], AuthController.register);
 
-router.post("/updateToStaffAcc/:id", [
-    param("id").isMongoId().withMessage("Wrong ID format!")
-], AuthController.updateToStaffAccountType);
-
 module.exports = router
+export {}

@@ -64,13 +64,12 @@ class BookingController {
 
         ObjectUtils.checkValuesFormat(req, next);
 
-        await Booking.findByIdAndUpdate(id, {
-            status: "CLOSED"
-        }).then((data: IUser) => {
-            res.send(data)
-        }).catch((err) => {
-            return next(ApiError.internal(err.message));
-        });
+        await Booking.findByIdAndUpdate(id, {status: "CLOSED"})
+            .then((data: IUser) => {
+                res.send(data)
+            }).catch((err) => {
+                return next(ApiError.internal(err.message));
+            });
     }
 }
 
