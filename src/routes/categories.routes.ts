@@ -1,11 +1,17 @@
 const router = require('express').Router()
 const {FileUpload} = require("../middlewares");
 const {CategoryController} = require("../controllers");
+import {body, param} from "express-validator";
 
 router.post("/", [FileUpload.single("photo")], CategoryController.create);
 router.get("/", CategoryController.getAll);
-router.get("/:id", CategoryController.getOne);
-router.post("/addStaff", CategoryController.addStaffToCategoryServices);
+router.get("/:id", [
+    param("id").isMongoId().withMessage("Wrong ID format!")
+], CategoryController.getOne);
+router.post("/addStaff", [
+    body("categoryId").isMongoId().withMessage("Wrong CATEGORY_ID format!"),
+    body("staffId").isMongoId().withMessage("Wrong STAFF_ID format!")
+], CategoryController.addStaffToCategoryServices);
 
 module.exports = router
 export {}

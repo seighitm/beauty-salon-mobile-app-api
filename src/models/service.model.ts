@@ -6,7 +6,7 @@ const Service = model(
         name: String,
         description: String,
         price: Number,
-        duration: String
+        duration: Number // minutes
     }, {versionKey: false})
 );
 

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "bdb745f0-dd31-4b21-8ab8-948d3439eb14",
+		"_postman_id": "0d50313f-7267-4095-ad8c-c6d18be3e552",
 		"name": "bookings",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -85,6 +85,49 @@
 			"response": []
 		},
 		{
+			"name": "closeBooking",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZkZmZmZmZmZmRmZiIsIl9pZCI6IjYxNzI5OTY3MjVjODZkNzIwODVjNWVlMiIsInJvbGUiOiJhZG1pbiIsInVzZXJuYW1lIjoiZGhmYWZkZmRmZmZmZmRkZmRoZmZkYSIsImlhdCI6MTYzNDkwMDMyNywiZXhwIjoxNjM0OTg2NzI3fQ.VmUmbsqG3pbPYqZR2NV3YwQyHByjVl2jqHWduVRgYqI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxNzBhNWJhODQzMzdkN2NkM2Q5ZWZjOCIsImlhdCI6MTY zNDc3MjQxNCwiZXhwIjoxNjM0ODU4ODE0fQ.qJHI67ePjZiaSXE95qrsO0SsMzMsV0aaLLndW3W1aMQ",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/bookings/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"bookings",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "addBookings",
 			"request": {
 				"auth": {
@@ -107,7 +150,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"userId\": \"61800e033d4f63019d28b539\",\r\n    \"serviceId\": \"61800ec04e4c36ca7fcce1ca\"\r\n}",
+					"raw": "{\r\n    \"clientId\": \"61800e033d4f63019d28b539\",\r\n    \"serviceId\": \"61800ec04e4c36ca7fcce1ca\",\r\n    \"staffId\": \"61800e033d4f63019d28b539\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

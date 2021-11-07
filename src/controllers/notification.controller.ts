@@ -4,13 +4,16 @@ import {INotification} from "../types/notification";
 const DateUtils = require("../utils/dateUtils")
 const ApiError = require("../error/ApiError");
 const Notification = require("../models/notification.model");
+const {ObjectUtils} = require("../utils");
 
 class NotificationController {
     async create(req: Request, res: Response, next: NextFunction) {
         const {clientId, staffId, message} = req.body;
 
+        ObjectUtils.checkValuesFormat(req, next);
+
         await Notification.create({
-            dateTime: DateUtils.getCurrentDate,
+            dateTime: DateUtils.getCurrentDate(),
             message,
             staff: staffId,
             client: clientId
@@ -34,6 +37,8 @@ class NotificationController {
 
     async getOne(req: Request, res: Response, next: NextFunction) {
         const {id} = req.params
+
+        ObjectUtils.checkValuesFormat(req, next);
 
         await Notification.find({_id: id})
             .populate({path: "client"})

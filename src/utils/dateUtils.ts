@@ -10,5 +10,5 @@ class DateUtils {
     }
 }
 
-module.exports = DateUtils
+module.exports = new DateUtils()
 

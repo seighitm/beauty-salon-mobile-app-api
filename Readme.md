@@ -14,6 +14,7 @@ JWT_SECRET = your secret key
 
 ```
 git clone https://github.com/seighitm/beauty-salon-mobile-app-api
+cd beauty-salon-mobile-app-api
 yarn install
 yarn dev
 ```

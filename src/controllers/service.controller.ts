@@ -4,10 +4,13 @@ import {IService} from "../types/service";
 const ApiError = require("../error/ApiError");
 const Service = require("../models/service.model");
 const Category = require("../models/category.model");
+const {ObjectUtils} = require("../utils");
 
 class ServiceController {
     async create(req: Request, res: Response, next: NextFunction) {
         const {name, description, price, duration, categoryId} = req.body
+
+        ObjectUtils.checkValuesFormat(req, next);
 
         await Service.create({name, description, price, duration})
             .then((serv: IService) => {
@@ -34,6 +37,9 @@ class ServiceController {
 
     async getOne(req: Request, res: Response, next: NextFunction) {
         const {id} = req.params
+
+        ObjectUtils.checkValuesFormat(req, next);
+
         await Service.find({_id: id})
             .then((data: IService) => {
                 res.send(data);

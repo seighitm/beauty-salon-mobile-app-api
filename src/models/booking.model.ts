@@ -13,6 +13,10 @@ const Booking = model(
         staff: {
             type: Schema.Types.ObjectId,
             ref: 'User'
+        },
+        client:{
+            type: Schema.Types.ObjectId,
+            ref: 'User'
         }
     }, {versionKey: false})
 );
