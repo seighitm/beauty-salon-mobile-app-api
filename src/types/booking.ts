@@ -7,5 +7,6 @@ export interface IBooking {
     status: string;
     info: string;
     service?: IService;
-    staff?: IUser
+    staff?: IUser;
+    createdAt: string;
 }

@@ -10,19 +10,22 @@ const {ObjectUtils, DateUtils} = require("../utils");
 
 class BookingController {
     async create(req: Request, res: Response, next: NextFunction) {
-        const {staffId, clientId, serviceId} = req.body;
+        const {staffId, clientId, serviceId, dateTime} = req.body;
 
         ObjectUtils.checkValuesFormat(req, next);
 
         await Service.findById(serviceId)
             .then((data: IService) => {
+                console.log(data)
                 Booking.create({
-                    dateTime: DateUtils.getCurrentDate(),
+                    createdAt: DateUtils.getCurrentDate(),
                     status: "PENDING",
                     price: data.price,
                     service: serviceId,
                     staff: staffId,
-                    client: clientId
+                    client: clientId,
+                    serviceDuration: data.duration,
+                    dateTime: dateTime
                 }).then((data: IBooking) => {
                     res.send(data)
                 }).catch((err) => {
@@ -67,6 +70,23 @@ class BookingController {
         await Booking.findByIdAndUpdate(id, {status: "CLOSED"})
             .then((data: IUser) => {
                 res.send(data)
+            }).catch((err) => {
+                return next(ApiError.internal(err.message));
+            });
+    }
+
+    async checkAvailability(req: Request, res: Response, next: NextFunction) {
+        const {staffId, date} = req.body;
+
+        const timeIntervals = ["7:00", "8:30", "10:00", "11:30", "13:00", "14:30", "16:00"]
+
+        ObjectUtils.checkValuesFormat(req, next);
+
+        await Booking.find({staff: staffId, status: "PENDING", dateTime: {"$regex": date, "$options": "i"}})
+            .then((bookings: IBooking[]) => {
+                let dateFromDb = bookings.map(item => item.dateTime.split("/")[1]);
+                let timeAvailable = timeIntervals.filter(item => !dateFromDb.includes(item))
+                res.send(timeAvailable)
             }).catch((err) => {
                 return next(ApiError.internal(err.message));
             });
