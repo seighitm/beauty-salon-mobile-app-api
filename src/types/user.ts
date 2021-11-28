@@ -1,4 +1,5 @@
 export interface IUser {
+    isActive: Boolean;
     _id: string;
     username: string;
     email: string;

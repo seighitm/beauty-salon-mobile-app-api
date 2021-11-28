@@ -1,14 +1,19 @@
 import {NextFunction, Request, Response} from "express";
 import {IUser} from "../types/user";
 import {IMulterRequest} from "../types/request";
+import {nanoid} from "nanoid";
+import {IMailRequest} from "../types/payload/mailRequest";
+import * as path from 'path'
 
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const ApiError = require("../error/ApiError");
-const User = require("../models/user.model");
-const {ObjectUtils} = require("../utils");
+const {User, EmailValidation} = require("../models");
+const {ObjectUtils, MailSender, AppConstants} = require("../utils");
 
-const generateJwt = (payload: IUser) => {
+var ejs = require("ejs");
+
+const generateJwt = (payload) => {
     return jwt.sign(
         payload,
         process.env.JWT_SECRET, {
@@ -27,44 +32,121 @@ class AuthController {
                 return next(ApiError.badRequest('Please enter all fields!'));
             }
 
+            // Validation request fields
             ObjectUtils.checkValuesFormat(req, next);
 
-            const candidate: IUser = await User.findOne(
-                {$or: [{email}, {numberPhone}]}
-            ).catch((err) => {
-                return next(ApiError.internal(err.message));
-            });
+            // Check if the user already exists with this email
+            const candidate: IUser = await User.findOne({email})
 
-            if (candidate) {
-                return next(ApiError.badRequest("User already exists [with email or numberPhone]!"))
+            // Check if the user exists and the account is active
+            if (candidate && candidate.isActive) {
+                return next(ApiError.badRequest("Email is already taken!"))
             }
 
+            // Encrypt the password
             const hashedPassword: string = await bcrypt.hash(password, 8);
 
-            const userRole: string = role ? role : 'USER'
+            // By default everyone is associated with "USER" role
+            const userRole: string = role ? role : AppConstants.ROLE_USER
 
-            const result = await User.create({
-                email,
-                password: hashedPassword,
-                role: userRole,
-                username,
-                numberPhone,
-                photo
-            }).catch((err) => {
-                return next(ApiError.internal(err.message));
-            });
+            let user: IUser;
+            const secretKey = nanoid(4);
 
-            const token: string = generateJwt({
-                _id: result._id,
-                email: result.email,
-                username: result.username,
-                role: userRole,
-            });
-            res.status(200).json({user: result, token});
+            if (candidate) {
+                // If the user exists and is not active,
+                // then we change the credentials, but not the email.
+                user = await User.findByIdAndUpdate(candidate._id, {
+                    password: hashedPassword,
+                    role: userRole,
+                    username,
+                    numberPhone,
+                    photo,
+                    isActive: false
+                })
+            } else {
+                // If the user does not exist then he is created
+                user = await User.create({
+                    email,
+                    password: hashedPassword,
+                    role: userRole,
+                    username,
+                    numberPhone,
+                    photo,
+                    isActive: false
+                })
+            }
+
+            if (user) {
+                const createdAt = Date.now();
+                const validationEmailToken = await EmailValidation.findOne({user: user._id})
+
+                if (validationEmailToken) {
+                    // If the user exists, and does not have the account activated,
+                    // then we send a new secret code by email.
+                    await EmailValidation.findOneAndUpdate({user: candidate._id}, {
+                        createdAt,
+                        secretKey
+                    })
+                } else {
+                    // If the user does not exist
+                    // then we create a new secret code and send it by email.
+                    await EmailValidation.create({
+                        createdAt,
+                        secretKey,
+                        user: user._id,
+                        isValid: true
+                    })
+                }
+
+                // Generate jwt code
+                const token = generateJwt({
+                    _id: user._id,
+                    email: user.email,
+                    username: user.username,
+                    role: userRole,
+                })
+
+                const filePath = path.resolve(__dirname, '..', "static/", "test.html");
+                await ejs.renderFile(filePath, {code: `Activation code: ${secretKey}`}, function (err, data) {
+                    const mailPayload: IMailRequest = {
+                        to: user.email,
+                        subject: "EMAIL VALIDATION",
+                        html: data
+                    }
+
+                    // Send email
+                    MailSender(mailPayload)
+                        .then(() => {
+                            res.status(200).json({user, token: user.isActive ? token : ""});
+                        })
+                });
+
+
+            }
         } catch (e) {
             return next(ApiError.internal(e.message));
         }
     };
+
+    async validateEmail(req: Request, res: Response, next: NextFunction) {
+        const {userId, secretKey} = req.body
+
+        try {
+            // If the user exists but does not have a validated account,
+            // then we validate it and delete the secret code related to this user
+            // from the "email_validation" table.
+            EmailValidation.findOneAndDelete({user: userId, secretKey})
+                .then(emailValidationToken => {
+                    User.findByIdAndUpdate(userId, {
+                        isActive: true
+                    }).then(user =>
+                        res.status(200).json({user, emailValidationToken})
+                    )
+                })
+        } catch (e) {
+            return next(ApiError.internal(e.message));
+        }
+    }
 
     async login(req: Request, res: Response, next: NextFunction) {
         const {email, password} = req.body
@@ -74,21 +156,27 @@ class AuthController {
                 return next(ApiError.badRequest('Please enter all fields!'));
             }
 
+            // Validation request fields
             ObjectUtils.checkValuesFormat(req, next);
 
+            // Check if the user already exists with this email
             const user: IUser = await User.findOne({email})
-                .catch((err) => {
-                    return next(ApiError.internal(err.message));
-                });
 
             if (!user) {
                 return next(ApiError.badRequest("User does not exist!"));
             }
 
+            if (user && !user.isActive) {
+                return next(ApiError.badRequest("Account is not validated!"));
+            }
+
             const isMatch: boolean = await bcrypt.compare(password, user.password);
+
+            // Check the current password with the password saved in the database.
             if (!isMatch)
                 return next(ApiError.badRequest("Invalid credentials!"));
 
+            // Generate jwt code
             const token: string = generateJwt({
                 _id: user._id,
                 role: user.role,

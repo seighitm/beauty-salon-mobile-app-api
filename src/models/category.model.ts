@@ -1,17 +1,18 @@
 const {Schema, model} = require("mongoose");
+const {ModelConstants} = require("../utils");
 
 const Category = model(
-    "Category",
+    ModelConstants.CATEGORY,
     new Schema({
         name: String,
         photo: String,
         services: [{
             type: Schema.Types.ObjectId,
-            ref: 'Service'
+            ref: ModelConstants.SERVICE
         }],
         staffs: [{
             type: Schema.Types.ObjectId,
-            ref: 'User'
+            ref: ModelConstants.USER
         }]
     }, {versionKey: false})
 );

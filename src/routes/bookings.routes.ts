@@ -2,6 +2,8 @@ const router = require('express').Router()
 const {BookingController} = require("../controllers");
 import {body, param} from "express-validator";
 
+router.get("/mybookings", BookingController.getMyBookingFilter)
+
 router.get("/checkAvailability", [
     body("staffId").isMongoId().withMessage("Wrong STAFF_ID format!"),
     body("date").isDate().withMessage("Wrong DATE format!")
@@ -22,6 +24,7 @@ router.get("/:id", [
 router.put("/:id", [
     param("id").isMongoId().withMessage("Wrong ID format!")
 ], BookingController.closeBooking)
+
 
 module.exports = router
 export {}

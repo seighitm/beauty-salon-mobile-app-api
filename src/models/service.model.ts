@@ -1,7 +1,8 @@
 const {Schema, model} = require("mongoose");
+const {ModelConstants} = require("../utils");
 
 const Service = model(
-    "Service",
+    ModelConstants.SERVICE,
     new Schema({
         name: String,
         description: String,

@@ -1,11 +1,10 @@
 import {NextFunction, Request, Response} from "express";
 import {INotification} from "../types/notification";
-import {IService} from "../types/service";
 
 const DateUtils = require("../utils/dateUtils")
 const ApiError = require("../error/ApiError");
-const Notification = require("../models/notification.model");
-const {ObjectUtils} = require("../utils");
+const {Notification} = require("../models");
+const {ObjectUtils, AppConstants} = require("../utils");
 
 class NotificationController {
     async create(req: Request, res: Response, next: NextFunction) {
@@ -27,8 +26,20 @@ class NotificationController {
 
     async getAll(req: Request, res: Response, next: NextFunction) {
         await Notification.find({})
-            .populate({path: "client"})
-            .populate({path: "staff"})
+            .populate({path: AppConstants.CLIENT})
+            .populate({path: AppConstants.STAFF})
+            .then((data: INotification) => {
+                res.send(data);
+            }).catch(err => {
+                return next(ApiError.internal(err.message))
+            });
+    }
+
+    async getMyNotifications(req: Request, res: Response, next: NextFunction) {
+        const {userId} = req.query;
+        await Notification.find({$or: [{staff: userId}, {client: userId}]})
+            .populate({path: AppConstants.CLIENT})
+            .populate({path: AppConstants.STAFF})
             .then((data: INotification) => {
                 res.send(data);
             }).catch(err => {
@@ -42,8 +53,8 @@ class NotificationController {
         ObjectUtils.checkValuesFormat(req, next);
 
         await Notification.find({_id: id})
-            .populate({path: "client"})
-            .populate({path: "staff"})
+            .populate({path: AppConstants.CLIENT})
+            .populate({path: AppConstants.STAFF})
             .then((data: INotification) => {
                 res.send(data);
             }).catch(err => {

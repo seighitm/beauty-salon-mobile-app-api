@@ -2,8 +2,7 @@ import {NextFunction, Request, Response} from "express";
 import {IService} from "../types/service";
 
 const ApiError = require("../error/ApiError");
-const Service = require("../models/service.model");
-const Category = require("../models/category.model");
+const {Service, Category} = require("../models");
 const {ObjectUtils} = require("../utils");
 
 class ServiceController {

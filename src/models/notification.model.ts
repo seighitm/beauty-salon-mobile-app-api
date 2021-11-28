@@ -1,17 +1,18 @@
 const {Schema, model} = require("mongoose");
+const {ModelConstants} = require("../utils");
 
 const Notification = model(
-    "Notification",
+    ModelConstants.NOTIFICATION,
     new Schema({
         dateTime: String,
         message: String,
         client: {
             type: Schema.Types.ObjectId,
-            ref: 'User'
+            ref: ModelConstants.USER
         },
         staff: {
             type: Schema.Types.ObjectId,
-            ref: 'User'
+            ref: ModelConstants.USER
         }
     }, {versionKey: false})
 );

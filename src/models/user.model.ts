@@ -1,14 +1,16 @@
 const {Schema, model} = require("mongoose");
+const {ModelConstants} = require("../utils");
 
 const User = model(
-    "User",
+    ModelConstants.USER,
     new Schema({
         username: String,
         email: String,
         password: String,
         numberPhone: String,
         photo: String,
-        role: String
+        role: String,
+        isActive: Boolean
     }, {versionKey: false})
 );
 

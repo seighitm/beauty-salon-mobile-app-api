@@ -10,6 +10,7 @@ module.exports = function (role: string) {
         if (req.method === "OPTIONS") {
             next()
         }
+
         try {
             const token: any = req.headers.authorization?.split(' ')[1]
             if (!token) {

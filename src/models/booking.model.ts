@@ -1,7 +1,8 @@
 const {Schema, model} = require("mongoose");
+const {ModelConstants} = require("../utils");
 
 const Booking = model(
-    "Booking",
+    ModelConstants.BOOKING,
     new Schema({
         createdAt: String,
         dateTime: String,
@@ -10,15 +11,15 @@ const Booking = model(
         serviceDuration: String,
         service: {
             type: Schema.Types.ObjectId,
-            ref: 'Service'
+            ref: ModelConstants.SERVICE
         },
         staff: {
             type: Schema.Types.ObjectId,
-            ref: 'User'
+            ref: ModelConstants.USER
         },
-        client:{
+        client: {
             type: Schema.Types.ObjectId,
-            ref: 'User'
+            ref: ModelConstants.USER
         }
     }, {versionKey: false})
 );

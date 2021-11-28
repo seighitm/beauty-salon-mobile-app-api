@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const {AuthController} = require("../controllers");
 const {FileUpload} = require("../middlewares");
-import {body, param} from "express-validator";
+import {body} from "express-validator";
 
 router.post("/login", [
     body('email').isEmail().withMessage('Invalid EAMIL format!'),
@@ -14,6 +14,8 @@ router.post("/register", [
     body('password').isLength({min: 3, max: 32}).withMessage("Error! Exceeded PASSWORD length!"),
     body('username').isLength({min: 3, max: 32}).withMessage("Error! Exceeded USERNAME length!"),
 ], AuthController.register);
+
+router.put("/validateemail", AuthController.validateEmail);
 
 module.exports = router
 export {}

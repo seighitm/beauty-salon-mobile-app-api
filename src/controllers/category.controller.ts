@@ -3,8 +3,8 @@ import {IMulterRequest} from "../types/request";
 import {ICategory} from "../types/category";
 
 const ApiError = require("../error/ApiError");
-const Category = require("../models/category.model");
-const {ObjectUtils} = require("../utils");
+const {Category} = require("../models");
+const {ObjectUtils, AppConstants} = require("../utils");
 
 class CategoryController {
     async create(req: IMulterRequest, res: Response, next: NextFunction) {
@@ -27,8 +27,8 @@ class CategoryController {
 
     async getAll(req: Request, res: Response, next: NextFunction) {
         await Category.find({})
-            .populate({path: "services"})
-            .populate({path: "staffs"})
+            .populate({path: AppConstants.SERVICE})
+            .populate({path: AppConstants.STAFF})
             .then((data: ICategory) => {
                 res.status(200).send(data);
             }).catch(err => {
@@ -42,8 +42,8 @@ class CategoryController {
         ObjectUtils.checkValuesFormat(req, next);
 
         await Category.find({_id: id})
-            .populate({path: "services"})
-            .populate({path: "staffs"})
+            .populate({path: AppConstants.MULTIPLE_SERVICES})
+            .populate({path: AppConstants.MULTIPLE_STAFFS})
             .then((data: ICategory) => {
                 res.send(data);
             }).catch(err => {

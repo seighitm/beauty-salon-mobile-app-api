@@ -1,5 +1,17 @@
-module.exports.Booking = require('./booking.model');
-module.exports.User = require('./user.model');
-module.exports.UserNotification = require('./notification.model');
-module.exports.Service = require('./service.model');
-module.exports.Category = require('./category.model');
+const Booking = require('./booking.model');
+const User = require('./user.model');
+const Notification = require('./notification.model');
+const Service = require('./service.model');
+const Category = require('./category.model');
+const EmailValidation = require('./emailValidation.model');
+
+module.exports = {
+    Booking,
+    User,
+    Notification,
+    Service,
+    Category,
+    EmailValidation,
+}
+
+export {}

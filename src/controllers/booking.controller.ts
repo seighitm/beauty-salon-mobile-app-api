@@ -2,11 +2,11 @@ import {NextFunction, Request, Response} from "express";
 import {IBooking} from "../types/booking";
 import {IService} from "../types/service";
 import {IUser} from "../types/user";
+import {IBookingFilterRequest} from "../types/payload/bookingFilterRequest";
 
 const ApiError = require("../error/ApiError");
-const Service = require("../models/service.model");
-const Booking = require("../models/booking.model");
-const {ObjectUtils, DateUtils} = require("../utils");
+const {Service, Booking} = require("../models");
+const {ObjectUtils, DateUtils, AppConstants} = require("../utils");
 
 class BookingController {
     async create(req: Request, res: Response, next: NextFunction) {
@@ -19,7 +19,7 @@ class BookingController {
                 console.log(data)
                 Booking.create({
                     createdAt: DateUtils.getCurrentDate(),
-                    status: "PENDING",
+                    status: AppConstants.STATUS_PENDING,
                     price: data.price,
                     service: serviceId,
                     staff: staffId,
@@ -53,12 +53,30 @@ class BookingController {
         ObjectUtils.checkValuesFormat(req, next);
 
         await Booking.find({_id: id})
-            .populate({path: "service"})
-            .populate({path: "staff"})
+            .populate({path: AppConstants.SERVICE})
+            .populate({path: AppConstants.STAFF})
             .then((data: IBooking) => {
                 res.send(data);
             }).catch(err => {
                 return next(ApiError.internal(err.message))
+            });
+    }
+
+    async getMyBookingFilter(req: Request, res: Response, next: NextFunction) {
+        let filter: IBookingFilterRequest = {};
+
+        if (req.query.status != null)
+            filter.status = req.query.status as string;
+        if (req.query.clientId != null)
+            filter.client = req.query.clientId as string;
+
+        filter.status = filter.status.toUpperCase();
+
+        await Booking.find(filter)
+            .then((data: IUser) => {
+                res.send(data)
+            }).catch((err) => {
+                return next(ApiError.internal(err.message));
             });
     }
 
@@ -67,7 +85,7 @@ class BookingController {
 
         ObjectUtils.checkValuesFormat(req, next);
 
-        await Booking.findByIdAndUpdate(id, {status: "CLOSED"})
+        await Booking.findByIdAndUpdate(id, {status: AppConstants.STATUS_CLOSED})
             .then((data: IUser) => {
                 res.send(data)
             }).catch((err) => {
@@ -82,7 +100,7 @@ class BookingController {
 
         ObjectUtils.checkValuesFormat(req, next);
 
-        await Booking.find({staff: staffId, status: "PENDING", dateTime: {"$regex": date, "$options": "i"}})
+        await Booking.find({staff: staffId, status: AppConstants.STATUS_PENDING, dateTime: {"$regex": date, "$options": "i"}})
             .then((bookings: IBooking[]) => {
                 let dateFromDb = bookings.map(item => item.dateTime.split("/")[1]);
                 let timeAvailable = timeIntervals.filter(item => !dateFromDb.includes(item))
