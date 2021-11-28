@@ -27,8 +27,8 @@ class CategoryController {
 
     async getAll(req: Request, res: Response, next: NextFunction) {
         await Category.find({})
-            .populate({path: AppConstants.SERVICE})
-            .populate({path: AppConstants.STAFF})
+            .populate({path: AppConstants.MULTIPLE_SERVICES})
+            .populate({path: AppConstants.MULTIPLE_STAFFS})
             .then((data: ICategory) => {
                 res.status(200).send(data);
             }).catch(err => {

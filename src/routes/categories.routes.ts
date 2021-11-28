@@ -1,11 +1,11 @@
 const router = require('express').Router()
-const {FileUpload} = require("../middlewares");
+const {FileUpload, AuthMiddleware} = require("../middlewares");
 const {CategoryController} = require("../controllers");
 import {body, param} from "express-validator";
 
 router.post("/", [FileUpload.single("photo")], CategoryController.create);
 
-router.get("/", CategoryController.getAll);
+router.get("/", AuthMiddleware(), CategoryController.getAll);
 
 router.get("/:id", [
     param("id").isMongoId().withMessage("Wrong ID format!")
