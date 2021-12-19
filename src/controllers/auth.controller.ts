@@ -120,8 +120,6 @@ class AuthController {
                             res.status(200).json({user, token: user.isActive ? token : ""});
                         })
                 });
-
-
             }
         } catch (e) {
             return next(ApiError.internal(e.message));
@@ -135,7 +133,7 @@ class AuthController {
             // If the user exists but does not have a validated account,
             // then we validate it and delete the secret code related to this user
             // from the "email_validation" table.
-            EmailValidation.findOneAndDelete({user: userId, secretKey})
+            EmailValidation.findOneAndDelete({user: userId, secretKey: secretKey})
                 .then(emailValidationToken => {
                     User.findByIdAndUpdate(userId, {
                         isActive: true

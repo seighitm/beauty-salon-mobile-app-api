@@ -65,14 +65,16 @@ class BookingController {
     async getMyBookingFilter(req: Request, res: Response, next: NextFunction) {
         let filter: IBookingFilterRequest = {};
 
-        if (req.query.status != null)
+        if (req.query.status != null) {
             filter.status = req.query.status as string;
+            filter.status = filter.status.toUpperCase();
+        }
         if (req.query.clientId != null)
             filter.client = req.query.clientId as string;
 
-        filter.status = filter.status.toUpperCase();
-
         await Booking.find(filter)
+            .populate({path: AppConstants.SERVICE})
+            .populate({path: AppConstants.STAFF})
             .then((data: IUser) => {
                 res.send(data)
             }).catch((err) => {
@@ -100,7 +102,11 @@ class BookingController {
 
         ObjectUtils.checkValuesFormat(req, next);
 
-        await Booking.find({staff: staffId, status: AppConstants.STATUS_PENDING, dateTime: {"$regex": date, "$options": "i"}})
+        await Booking.find({
+            staff: staffId,
+            status: AppConstants.STATUS_PENDING,
+            dateTime: {"$regex": date, "$options": "i"}
+        })
             .then((bookings: IBooking[]) => {
                 let dateFromDb = bookings.map(item => item.dateTime.split("/")[1]);
                 let timeAvailable = timeIntervals.filter(item => !dateFromDb.includes(item))

@@ -5,7 +5,7 @@ import {body, param} from "express-validator";
 
 router.post("/", [FileUpload.single("photo")], CategoryController.create);
 
-router.get("/", AuthMiddleware(), CategoryController.getAll);
+router.get("/", CategoryController.getAll);
 
 router.get("/:id", [
     param("id").isMongoId().withMessage("Wrong ID format!")

@@ -19,17 +19,17 @@ class UserController {
             });
     }
 
-    deleteOne(req: Request, res: Response, next: NextFunction) {
+    async deleteOne(req: Request, res: Response, next: NextFunction) {
         const {id} = req.params;
 
         ObjectUtils.checkValuesFormat(req, next);
 
-        User.findByIdAndDelete(id)
+        await User.findByIdAndDelete(id)
             .then((data: IUser) => {
                 res.send(data);
             }).catch(err => {
-            return next(ApiError.badRequest(err.message));
-        });
+                return next(ApiError.badRequest(err.message));
+            });
     }
 }
 

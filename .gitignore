@@ -25,3 +25,5 @@ package-lock.json
 !.vscode/launch.json
 !.vscode/extensions.json
 .idea
+
+/src/uploads
