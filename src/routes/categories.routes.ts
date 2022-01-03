@@ -1,9 +1,9 @@
 const router = require('express').Router()
-const {FileUpload, AuthMiddleware} = require("../middlewares");
+const {FileUploadMiddleware} = require("../middlewares");
 const {CategoryController} = require("../controllers");
 import {body, param} from "express-validator";
 
-router.post("/", [FileUpload.single("photo")], CategoryController.create);
+router.post("/", [FileUploadMiddleware.single("photo")], CategoryController.create);
 
 router.get("/", CategoryController.getAll);
 
@@ -21,5 +21,3 @@ router.delete("/:id", [
 ], CategoryController.deleteOne)
 
 module.exports = router
-export {}
-

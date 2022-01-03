@@ -27,5 +27,3 @@ router.put("/:id", [
 
 
 module.exports = router
-export {}
-

@@ -62,7 +62,7 @@ class NotificationController {
             });
     }
 
-    deleteOne(req: Request, res: Response, next: NextFunction) {
+    async deleteOne(req: Request, res: Response, next: NextFunction) {
         const {id} = req.params;
 
         ObjectUtils.checkValuesFormat(req, next);

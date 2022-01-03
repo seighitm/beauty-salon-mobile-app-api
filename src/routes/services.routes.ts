@@ -25,4 +25,3 @@ router.delete("/:id", [
 ], ServiceController.deleteOne);
 
 module.exports = router
-export {}

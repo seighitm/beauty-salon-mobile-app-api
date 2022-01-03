@@ -20,5 +20,3 @@ router.delete("/:id", [
 ], NotificationController.deleteOne);
 
 module.exports = router
-export {}
-

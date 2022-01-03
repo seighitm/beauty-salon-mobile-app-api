@@ -51,7 +51,7 @@ class CategoryController {
             });
     }
 
-    addStaffToCategoryServices(req: Request, res: Response, next: NextFunction) {
+    async addStaffToCategoryServices(req: Request, res: Response, next: NextFunction) {
         const {categoryId, staffId} = req.body;
 
         ObjectUtils.checkValuesFormat(req, next);
@@ -66,7 +66,7 @@ class CategoryController {
         });
     }
 
-    deleteOne(req: Request, res: Response, next: NextFunction) {
+    async deleteOne(req: Request, res: Response, next: NextFunction) {
         const {id} = req.params;
 
         ObjectUtils.checkValuesFormat(req, next);

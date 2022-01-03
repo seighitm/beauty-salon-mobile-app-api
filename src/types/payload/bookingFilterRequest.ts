@@ -1,5 +1,5 @@
 export interface IBookingFilterRequest {
+    _id?: string
     status?: string;
     client?: string;
-    _id?: string
 }

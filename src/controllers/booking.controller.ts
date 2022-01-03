@@ -106,14 +106,13 @@ class BookingController {
             staff: staffId,
             status: AppConstants.STATUS_PENDING,
             dateTime: {"$regex": date, "$options": "i"}
-        })
-            .then((bookings: IBooking[]) => {
-                let dateFromDb = bookings.map(item => item.dateTime.split("/")[1]);
-                let timeAvailable = timeIntervals.filter(item => !dateFromDb.includes(item))
-                res.send(timeAvailable)
-            }).catch((err) => {
-                return next(ApiError.internal(err.message));
-            });
+        }).then((bookings: IBooking[]) => {
+            let dateFromDb = bookings.map(item => item.dateTime.split("/")[1]);
+            let timeAvailable = timeIntervals.filter(item => !dateFromDb.includes(item))
+            res.send(timeAvailable)
+        }).catch((err) => {
+            return next(ApiError.internal(err.message));
+        });
     }
 }
 

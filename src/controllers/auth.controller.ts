@@ -3,15 +3,13 @@ import {IUser} from "../types/user";
 import {IMulterRequest} from "../types/request";
 import {nanoid} from "nanoid";
 import {IMailRequest} from "../types/payload/mailRequest";
-import * as path from 'path'
 
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const ApiError = require("../error/ApiError");
 const {User, EmailValidation} = require("../models");
-const {ObjectUtils, MailSender, AppConstants} = require("../utils");
-
-var ejs = require("ejs");
+const {ObjectUtils, AppConstants} = require("../utils");
+const {MailService} = require("../service")
 
 const generateJwt = (payload) => {
     return jwt.sign(
@@ -46,7 +44,7 @@ class AuthController {
             // Encrypt the password
             const hashedPassword: string = await bcrypt.hash(password, 8);
 
-            // By default everyone is associated with "USER" role
+            // By default, everyone is associated with "USER" role
             const userRole: string = role ? role : AppConstants.ROLE_USER
 
             let user: IUser;
@@ -60,7 +58,7 @@ class AuthController {
                     role: userRole,
                     username,
                     numberPhone,
-                    photo,
+                    photo: photo ? photo : null,
                     isActive: false
                 })
             } else {
@@ -106,23 +104,24 @@ class AuthController {
                     role: userRole,
                 })
 
-                const filePath = path.resolve(__dirname, '..', "static/", "test.html");
-                await ejs.renderFile(filePath, {code: `Activation code: ${secretKey}`}, function (err, data) {
-                    const mailPayload: IMailRequest = {
-                        to: user.email,
-                        subject: "EMAIL VALIDATION",
-                        html: data
-                    }
+                const mailPayload: IMailRequest = {
+                    to: user.email,
+                    subject: "EMAIL VALIDATION",
+                    secretKey
+                }
 
-                    // Send email
-                    MailSender(mailPayload)
-                        .then(() => {
-                            res.status(200).json({user, token: user.isActive ? token : ""});
-                        })
-                });
+                // Send email
+                MailService(mailPayload)
+                    .then(() => {
+                        res.status(200).json({user, token: user.isActive ? token : ""});
+                    }).catch(console.error);
             }
-        } catch (e) {
-            return next(ApiError.internal(e.message));
+        } catch (e: unknown) {
+            if (typeof e === "string") {
+                return next(ApiError.internal(e));
+            } else if (e instanceof Error) {
+                return next(ApiError.internal(e.message));
+            }
         }
     };
 
@@ -141,8 +140,12 @@ class AuthController {
                         res.status(200).json({user, emailValidationToken})
                     )
                 })
-        } catch (e) {
-            return next(ApiError.internal(e.message));
+        } catch (e: unknown) {
+            if (typeof e === "string") {
+                return next(ApiError.internal(e));
+            } else if (e instanceof Error) {
+                return next(ApiError.internal(e.message));
+            }
         }
     }
 
@@ -182,8 +185,12 @@ class AuthController {
                 username: user.username
             });
             res.status(200).json({user, token});
-        } catch (e) {
-            return next(ApiError.internal(e.message));
+        } catch (e: unknown) {
+            if (typeof e === "string") {
+                return next(ApiError.internal(e));
+            } else if (e instanceof Error) {
+                return next(ApiError.internal(e.message));
+            }
         }
     };
 }

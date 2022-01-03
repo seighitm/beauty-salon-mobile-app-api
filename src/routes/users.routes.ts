@@ -11,5 +11,3 @@ router.delete("/:id", [
 ], UserController.deleteOne);
 
 module.exports = router
-export {}
-
