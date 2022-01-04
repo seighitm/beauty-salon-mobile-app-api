@@ -25,12 +25,40 @@ class CategoryController {
             });
     }
 
+    async updateCategory(req: IMulterRequest, res: Response, next: NextFunction) {
+        const {categoryId, name} = req.body;
+
+        const filename = req.file?.filename
+
+        Category.findByIdAndUpdate(categoryId,
+            {$set: filename ? {name: name, photo: filename} : {name: name}},
+            {new: true, useFindAndModify: false})
+            .then((data: ICategory) => {
+                res.send(data);
+            }).catch(err => {
+            return next(ApiError.badRequest(err.message));
+        });
+    }
+
     async getAll(req: Request, res: Response, next: NextFunction) {
         await Category.find({})
             .populate({path: AppConstants.MULTIPLE_SERVICES})
             .populate({path: AppConstants.MULTIPLE_STAFFS})
             .then((data: ICategory) => {
                 res.status(200).send(data);
+            }).catch(err => {
+                return next(ApiError.badRequest(err.message));
+            });
+    }
+
+    async getAllStaffOfCategory(req: Request, res: Response, next: NextFunction) {
+        const {id} = req.params;
+
+        await Category.findById(id)
+            .populate({path: AppConstants.MULTIPLE_SERVICES})
+            .populate({path: AppConstants.MULTIPLE_STAFFS})
+            .then((data: ICategory) => {
+                res.status(200).send(data.staffs);
             }).catch(err => {
                 return next(ApiError.badRequest(err.message));
             });
@@ -58,6 +86,19 @@ class CategoryController {
 
         Category.findByIdAndUpdate(categoryId,
             {$push: {staffs: staffId}},
+            {new: true, useFindAndModify: false})
+            .then((data: ICategory) => {
+                res.send(data);
+            }).catch(err => {
+            return next(ApiError.badRequest(err.message));
+        });
+    }
+
+    async deleteStaffToCategoryServices(req: Request, res: Response, next: NextFunction) {
+        const {categoryId, staffId} = req.body;
+
+        Category.findByIdAndUpdate(categoryId,
+            {$pull: {staffs: staffId}},
             {new: true, useFindAndModify: false})
             .then((data: ICategory) => {
                 res.send(data);

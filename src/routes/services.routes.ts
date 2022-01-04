@@ -14,6 +14,8 @@ router.post("/", [
         .isNumeric().isLength({min: 0, max: 3}).withMessage("Duration is too long!"),
 ], ServiceController.create);
 
+router.put("/", ServiceController.updateService);
+
 router.get("/", ServiceController.getAll);
 
 router.get("/:id", [

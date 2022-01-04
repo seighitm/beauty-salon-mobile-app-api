@@ -7,9 +7,13 @@ router.post("/", [FileUploadMiddleware.single("photo")], CategoryController.crea
 
 router.get("/", CategoryController.getAll);
 
+router.get("/allStaffs/:id", CategoryController.getAllStaffOfCategory);
+
 router.get("/:id", [
     param("id").isMongoId().withMessage("Wrong ID format!")
 ], CategoryController.getOne);
+
+router.delete("/deleteStaff", CategoryController.deleteStaffToCategoryServices)
 
 router.put("/addStaff", [
     body("categoryId").isMongoId().withMessage("Wrong CATEGORY_ID format!"),
@@ -19,5 +23,8 @@ router.put("/addStaff", [
 router.delete("/:id", [
     param("id").isMongoId().withMessage("Wrong ID format!")
 ], CategoryController.deleteOne)
+
+
+router.put("/", [FileUploadMiddleware.single("photo")], CategoryController.updateCategory);
 
 module.exports = router

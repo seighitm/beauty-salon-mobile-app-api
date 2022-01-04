@@ -5,4 +5,5 @@ export interface ICategory {
     name: string;
     photo: string;
     services?: IService;
+    staffs?: object[];
 }
