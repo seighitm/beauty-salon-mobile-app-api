@@ -10,9 +10,7 @@ router.get("/checkAvailability", [
 ], BookingController.checkAvailability)
 
 router.post("/", [
-    body("staffId").isMongoId().withMessage("Wrong STAFF_ID format!"),
     body("clientId").isMongoId().withMessage("Wrong CLIENT_ID format!"),
-    body("serviceId").isMongoId().withMessage("Wrong SERVICE_ID format!")
 ], BookingController.create);
 
 router.get("/", BookingController.getAll);
@@ -24,6 +22,10 @@ router.get("/:id", [
 router.put("/:id", [
     param("id").isMongoId().withMessage("Wrong ID format!")
 ], BookingController.closeBooking)
+
+router.delete("/:id", [
+    param("id").isMongoId().withMessage("Wrong ID format!")
+], BookingController.deleteOne)
 
 
 module.exports = router

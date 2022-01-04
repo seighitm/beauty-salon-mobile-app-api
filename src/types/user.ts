@@ -1,4 +1,6 @@
-export interface IUser {
+import { Document, Schema } from "mongoose"
+
+export interface IUser extends Document{
     _id: string;
     username: string;
     email: string;
@@ -7,4 +9,5 @@ export interface IUser {
     numberPhone?: string;
     photo?: string;
     isActive: boolean;
+    cart?: object[];
 }

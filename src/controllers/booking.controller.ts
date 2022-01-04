@@ -5,41 +5,36 @@ import {IUser} from "../types/user";
 import {IBookingFilterRequest} from "../types/payload/bookingFilterRequest";
 
 const ApiError = require("../error/ApiError");
-const {Service, Booking} = require("../models");
+const {Service, Cart, Booking, User, BookingList} = require("../models");
 const {ObjectUtils, DateUtils, AppConstants} = require("../utils");
 
 class BookingController {
     async create(req: Request, res: Response, next: NextFunction) {
-        const {staffId, clientId, serviceId, dateTime} = req.body;
+        const {clientId}: any = req.body;
 
         ObjectUtils.checkValuesFormat(req, next);
 
-        await Service.findById(serviceId)
-            .then((data: IService) => {
-                console.log(data)
-                Booking.create({
-                    createdAt: DateUtils.getCurrentDate(),
-                    status: AppConstants.STATUS_PENDING,
-                    price: data.price,
-                    service: serviceId,
-                    staff: staffId,
-                    client: clientId,
-                    serviceDuration: data.duration,
-                    dateTime: dateTime
-                }).then((data: IBooking) => {
-                    res.send(data)
-                }).catch((err) => {
-                    return next(ApiError.internal(err.message))
-                })
-            }).catch(err => {
-                return next(ApiError.internal(err.message))
+        const cartDb = await Cart.find({user: clientId, status: "PENDING"})
+        for (let i = 0; i < cartDb.length; i++) {
+            cartDb[i].set({status: "IN_PROGRESS"})
+            cartDb[i].save()
+        }
+
+        await User.findByIdAndUpdate(clientId,
+            {$push: {bookingServices: cartDb}, $set: {cart: []}},
+            {new: true, useFindAndModify: false}
+        ).populate("bookingServices")
+            .then((data: IUser) => {
+                res.send(data)
+            }).catch((err) => {
+                return next(ApiError.internal(err.message));
             });
     }
 
     async getAll(req: Request, res: Response, next: NextFunction) {
-        await Booking.find({})
-            .populate({path: "service"})
-            .populate({path: "staff"})
+        await Cart.find({status: "IN_PROGRESS"})
+            .populate({path: AppConstants.SERVICE})
+            .populate({path: AppConstants.STAFF})
             .then((data: IBooking) => {
                 res.send(data);
             }).catch(err => {
@@ -52,7 +47,7 @@ class BookingController {
 
         ObjectUtils.checkValuesFormat(req, next);
 
-        await Booking.find({_id: id})
+        await Cart.find({_id: id, $or: [{status: "IN_PROGRESS"}, {status: "CLOSED"}]})
             .populate({path: AppConstants.SERVICE})
             .populate({path: AppConstants.STAFF})
             .then((data: IBooking) => {
@@ -63,16 +58,16 @@ class BookingController {
     }
 
     async getMyBookingFilter(req: Request, res: Response, next: NextFunction) {
-        let filter: IBookingFilterRequest = {};
+        let filter: any = {};
 
         if (req.query.status != null) {
             filter.status = req.query.status as string;
             filter.status = filter.status.toUpperCase();
         }
         if (req.query.clientId != null)
-            filter.client = req.query.clientId as string;
+            filter.user = req.query.clientId as string;
 
-        await Booking.find(filter)
+        await Cart.find({...filter, status: "IN_PROGRESS"})
             .populate({path: AppConstants.SERVICE})
             .populate({path: AppConstants.STAFF})
             .then((data: IUser) => {
@@ -87,7 +82,7 @@ class BookingController {
 
         ObjectUtils.checkValuesFormat(req, next);
 
-        await Booking.findByIdAndUpdate(id, {status: AppConstants.STATUS_CLOSED})
+        await Cart.findByIdAndUpdate(id, {status: AppConstants.STATUS_CLOSED})
             .then((data: IUser) => {
                 res.send(data)
             }).catch((err) => {
@@ -102,9 +97,9 @@ class BookingController {
 
         ObjectUtils.checkValuesFormat(req, next);
 
-        await Booking.find({
+        await Cart.find({
             staff: staffId,
-            status: AppConstants.STATUS_PENDING,
+            status: "IN_PROGRESS",
             dateTime: {"$regex": date, "$options": "i"}
         }).then((bookings: IBooking[]) => {
             let dateFromDb = bookings.map(item => item.dateTime.split("/")[1]);
@@ -113,6 +108,19 @@ class BookingController {
         }).catch((err) => {
             return next(ApiError.internal(err.message));
         });
+    }
+
+    async deleteOne(req: Request, res: Response, next: NextFunction) {
+        const {id} = req.params;
+
+        ObjectUtils.checkValuesFormat(req, next);
+
+        await Cart.findByIdAndDelete(id)
+            .then((data: IUser) => {
+                res.send(data);
+            }).catch(err => {
+                return next(ApiError.badRequest(err.message));
+            });
     }
 }
 

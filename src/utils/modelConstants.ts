@@ -1,5 +1,6 @@
 class ModelConstants {
     SERVICE = "Service";
+    Cart = "Cart"
     USER = "User";
     BOOKING = "Booking";
     CATEGORY = "Category";

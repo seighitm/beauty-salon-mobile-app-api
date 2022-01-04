@@ -10,4 +10,6 @@ router.delete("/:id", [
     param("id").isMongoId().withMessage("Wrong ID format!")
 ], UserController.deleteOne);
 
+router.get("/getUsers", UserController.getUsers);
+
 module.exports = router

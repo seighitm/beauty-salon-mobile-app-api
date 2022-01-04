@@ -1,4 +1,4 @@
-const {Schema, model} = require("mongoose");
+const {Schema, model, ObjectId} = require("mongoose");
 const {ModelConstants} = require("../utils");
 
 const User = model(
@@ -10,8 +10,16 @@ const User = model(
         numberPhone: String,
         photo: String,
         role: String,
-        isActive: Boolean
-    }, {versionKey: false})
+        isActive: Boolean,
+        cart: [{
+            type: ObjectId,
+            ref: "Cart"
+        }],
+        bookingServices: [{
+            type: ObjectId,
+            ref: "Cart"
+        }]
+    }, {versionKey: false}),
 );
 
 module.exports = User;

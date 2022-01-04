@@ -4,6 +4,7 @@ const CategoryController = require('./category.controller')
 const ServiceController = require('./service.controller')
 const BookingController = require('./booking.controller')
 const NotificationController = require('./notification.controller')
+const CartController = require('./cart.controller')
 
 module.exports = {
     AuthController,
@@ -11,7 +12,8 @@ module.exports = {
     ServiceController,
     BookingController,
     NotificationController,
-    UserController
+    UserController,
+    CartController
 }
 
 export {}
