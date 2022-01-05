@@ -10,8 +10,8 @@ class CategoryController {
     async createFull(req: IMulterRequest, res: Response, next: NextFunction) {
         const filename = req.file?.filename
 
-        // if (!filename)
-        //     return next(ApiError.badRequest("Error! No photo added!!"))
+        if (!filename)
+            return next(ApiError.badRequest("Error! No photo added!!"))
 
         let updatePayload: {
             name?: string,
@@ -34,7 +34,7 @@ class CategoryController {
         if (req.body.services != [])
             updatePayload.services = req.body.services as object[];
 
-        const categoryDb = await Category.create({name: updatePayload.name, photo: "nimic"})
+        const categoryDb = await Category.create({name: updatePayload.name, photo: filename})
 
         let tempDb: any = [];
         for (let i = 0; i < updatePayload.services.length; i++) {
