@@ -3,38 +3,48 @@ import {IMulterRequest} from "../types/request";
 import {ICategory} from "../types/category";
 
 const ApiError = require("../error/ApiError");
-const {Category} = require("../models");
+const {Category, Service} = require("../models");
 const {ObjectUtils, AppConstants} = require("../utils");
 
 class CategoryController {
     async createFull(req: IMulterRequest, res: Response, next: NextFunction) {
         const filename = req.file?.filename
 
-        if (!filename)
-            return next(ApiError.badRequest("Error! No photo added!!"))
+        // if (!filename)
+        //     return next(ApiError.badRequest("Error! No photo added!!"))
 
         let updatePayload: {
             name?: string,
             photo?: string,
-            staffs?: string[],
-            services?: string[]
+            staffs?: object[],
+            services?: any
         } = {
             name: req.body.name,
             photo: filename
         };
 
-        const categoryDb = await Category.findOne({name: updatePayload.name})
+        const candidateDb = await Category.findOne({name: updatePayload.name})
 
-        if(categoryDb)
+        if(candidateDb)
             return next(ApiError.badRequest("Error! Category with this name already exist!!"))
 
         if (req.body.staffs != [])
-            updatePayload.staffs = req.body.staffs as string[];
+            updatePayload.staffs = req.body.staffs as object[];
 
         if (req.body.services != [])
-            updatePayload.services = req.body.services as string[];
+            updatePayload.services = req.body.services as object[];
 
-        await Category.create({...updatePayload})
+        const categoryDb = await Category.create({name: updatePayload.name, photo: "nimic"})
+
+        let tempDb: any = [];
+        for (let i = 0; i < updatePayload.services.length; i++) {
+            updatePayload.services[i].categoryId = categoryDb._id
+            tempDb[i] = await Service.create({...updatePayload.services[i]})
+        }
+
+        await Category.findByIdAndUpdate(categoryDb._id,
+            {$set: {services: tempDb, staffs: updatePayload.staffs}},
+            {new: true, useFindAndModify: false})
             .then((data: ICategory) => {
                 res.status(200).send(data)
             }).catch((err) => {
