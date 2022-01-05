@@ -7,6 +7,41 @@ const {Category} = require("../models");
 const {ObjectUtils, AppConstants} = require("../utils");
 
 class CategoryController {
+    async createFull(req: IMulterRequest, res: Response, next: NextFunction) {
+        const filename = req.file?.filename
+
+        if (!filename)
+            return next(ApiError.badRequest("Error! No photo added!!"))
+
+        let updatePayload: {
+            name?: string,
+            photo?: string,
+            staffs?: string[],
+            services?: string[]
+        } = {
+            name: req.body.name,
+            photo: filename
+        };
+
+        const categoryDb = await Category.find({name: updatePayload.name})
+
+        if(categoryDb)
+            return next(ApiError.badRequest("Error! Category with this name already exist!!"))
+
+        if (req.body.staffs != [])
+            updatePayload.staffs = req.body.staffs as string[];
+
+        if (req.body.services != [])
+            updatePayload.services = req.body.services as string[];
+
+        await Category.create({...updatePayload})
+            .then((data: ICategory) => {
+                res.status(200).send(data)
+            }).catch((err) => {
+                return next(ApiError.badRequest(err.message));
+            });
+    }
+
     async create(req: IMulterRequest, res: Response, next: NextFunction) {
         const {name} = req.body
         const filename = req.file?.filename
@@ -24,6 +59,7 @@ class CategoryController {
                 return next(ApiError.badRequest(err.message));
             });
     }
+
 
     async updateCategory(req: IMulterRequest, res: Response, next: NextFunction) {
         const {categoryId, name} = req.body;
