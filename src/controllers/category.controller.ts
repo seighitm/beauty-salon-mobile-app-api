@@ -23,7 +23,7 @@ class CategoryController {
             photo: filename
         };
 
-        const categoryDb = await Category.find({name: updatePayload.name})
+        const categoryDb = await Category.findOne({name: updatePayload.name})
 
         if(categoryDb)
             return next(ApiError.badRequest("Error! Category with this name already exist!!"))
