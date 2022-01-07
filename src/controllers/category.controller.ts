@@ -31,8 +31,8 @@ class CategoryController {
         if (req.body.staffs != [])
             updatePayload.staffs = req.body.staffs as object[];
 
-        if (req.body.services != [])
-            updatePayload.services = req.body.services as object[];
+        if (JSON.parse(req.body.services) != [])
+            updatePayload.services = JSON.parse(req.body.services) as object[];
 
         const categoryDb = await Category.create({name: updatePayload.name, photo: filename})
 

@@ -5,6 +5,7 @@ const Cart = model(
     "Cart",
     new Schema({
         counter: Number,
+        serviceName: String,
         service: {
             type: ObjectId,
             ref: ModelConstants.SERVICE
@@ -13,6 +14,7 @@ const Cart = model(
             type: ObjectId,
             ref: "User"
         },
+        staffName: String,
         staff:{
             type: ObjectId,
             ref: "User"

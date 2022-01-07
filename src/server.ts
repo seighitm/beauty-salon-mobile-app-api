@@ -12,9 +12,9 @@ require("dotenv").config();
 require('./models');
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
-// app.use(helmet());
+app.use(helmet());
 app.use(cors());
-// app.use(morgan('dev'))
+app.use(morgan('dev'))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use('/api', router)

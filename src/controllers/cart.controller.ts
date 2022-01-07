@@ -19,7 +19,7 @@ class CartController {
             return next(ApiError.badRequest("Service not exist!"))
         }
 
-        const cartService: any = userDb.cart.find((x: any) => x.service == serviceId)
+        const cartService: any = userDb.cart.find((x: any) => x.service == serviceId && x.staff == staffId)
 
         if (cartService) {
             await Cart.findByIdAndUpdate(cartService._id,
@@ -29,14 +29,19 @@ class CartController {
                 return res.send(userDb)
             })
         } else {
+            const staffDB = await User.findById(userId)
+            const serviceDB = await Service.findById(serviceId)
+
             await Cart.create(
                 {
                     user: userId,
+                    serviceName: serviceDB.name,
                     service: serviceId,
+                    staffName: staffDB.username,
                     staff: staffId,
                     dateTime: dateTime,
                     price: price,
-                    counter: 0,
+                    counter: 1,
                     createdAt: DateUtils.getCurrentDate(),
                     status: AppConstants.STATUS_PENDING,
                 }
