@@ -1,5 +1,6 @@
 import {NextFunction, Request, Response} from "express";
 import {IUser} from "../types/user";
+import {IMulterRequest} from "../types/request";
 
 const ApiError = require("../error/ApiError");
 const {User} = require("../models");
@@ -59,6 +60,32 @@ class UserController {
             }).catch((err) => {
                 return next(ApiError.internal(err.message));
             });
+    }
+
+    async updateUserInfo(req: IMulterRequest, res: Response, next: NextFunction) {
+        const {id} = req.params
+
+        let updatePayload: {
+            username?: string,
+            email?: string,
+            numberPhone?: string,
+            photo?: string
+        } = {};
+
+        if (req.body.username)
+            updatePayload.username = req.body.username as string;
+        if (req.body.email)
+            updatePayload.email = req.body.email as string;
+        if (req.body.numberPhone)
+            updatePayload.numberPhone = req.body.numberPhone as string;
+        if (req.file && req.file.filename)
+            updatePayload.photo = req.file.filename as string;
+
+        await User.findByIdAndUpdate(id,
+            {$set: {...updatePayload}})
+
+        const userDb = await User.findById(id)
+        res.send(userDb)
     }
 }
 

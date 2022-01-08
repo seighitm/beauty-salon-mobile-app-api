@@ -6,8 +6,16 @@
 
 ```
 PORT = 8080
+
 DB_URL = your mongodb uri
+
 JWT_SECRET = your secret key
+
+EMAIL_USERNAME = 
+EMAIL_PASSWORD = 
+
+SMTP_HOST = 
+SMTP_PORT = 
 ```
 
 ### Installation
