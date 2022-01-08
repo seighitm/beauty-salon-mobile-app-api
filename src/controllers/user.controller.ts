@@ -39,6 +39,21 @@ class UserController {
             filter.role = req.query.role as string;
 
         await User.find(filter)
+            .populate("bookingServices")
+            .populate("cart")
+            .then((data: IUser) => {
+                res.send(data)
+            }).catch((err) => {
+                return next(ApiError.internal(err.message));
+            });
+    }
+
+    async getOneUser(req: Request, res: Response, next: NextFunction) {
+        const {id} = req.params
+
+        await User.findById(id)
+            .populate("bookingServices")
+            .populate("cart")
             .then((data: IUser) => {
                 res.send(data)
             }).catch((err) => {

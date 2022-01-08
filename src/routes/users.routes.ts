@@ -6,10 +6,14 @@ router.put("/updateAccType/:id", [
     param("id").isMongoId().withMessage("Wrong ID format!")
 ], UserController.updateToStaffAccountType);
 
+router.get("/getUsers", UserController.getUsers);
+
 router.delete("/:id", [
     param("id").isMongoId().withMessage("Wrong ID format!")
 ], UserController.deleteOne);
 
-router.get("/getUsers", UserController.getUsers);
+router.get("/:id", [
+    param("id").isMongoId().withMessage("Wrong ID format!")
+], UserController.getOneUser);
 
 module.exports = router
