@@ -35,8 +35,5 @@
         "node_modules",
         "spec",
         "dist",
-        "src/**",
-        "components/**",
-        "*"
     ]
 }

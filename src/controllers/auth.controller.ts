@@ -156,7 +156,6 @@ class AuthController {
             if (!email || !password) {
                 return next(ApiError.badRequest('Please enter all fields!'));
             }
-
             // Validation request fields
             ObjectUtils.checkValuesFormat(req, next);
 

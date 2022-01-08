@@ -32,7 +32,7 @@ class BookingController {
     }
 
     async getAll(req: Request, res: Response, next: NextFunction) {
-        await Cart.find({status: "IN_PROGRESS"})
+        await Cart.find({})
             .populate({path: AppConstants.SERVICE})
             .populate({path: AppConstants.STAFF})
             .then((data: IBooking) => {
@@ -50,6 +50,7 @@ class BookingController {
         await Cart.find({_id: id, $or: [{status: "IN_PROGRESS"}, {status: "CLOSED"}]})
             .populate({path: AppConstants.SERVICE})
             .populate({path: AppConstants.STAFF})
+            .populate({path: 'user'})
             .then((data: IBooking) => {
                 res.send(data);
             }).catch(err => {
@@ -63,11 +64,13 @@ class BookingController {
         if (req.query.status != null) {
             filter.status = req.query.status as string;
             filter.status = filter.status.toUpperCase();
+        }else {
+            filter.status = { "$ne": "PENDING" }
         }
         if (req.query.clientId != null)
             filter.user = req.query.clientId as string;
 
-        await Cart.find({...filter, status: "IN_PROGRESS"})
+        await Cart.find({...filter})
             .populate({path: AppConstants.SERVICE})
             .populate({path: AppConstants.STAFF})
             .then((data: IUser) => {
