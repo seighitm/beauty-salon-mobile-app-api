@@ -32,7 +32,16 @@ class BookingController {
     }
 
     async getAll(req: Request, res: Response, next: NextFunction) {
-        await Cart.find({})
+        let filter: any = {};
+
+        if (req.query.status != null) {
+            filter.status = req.query.status as string;
+            filter.status = filter.status.toUpperCase();
+        }else {
+            filter.status = { "$ne": "PENDING" }
+        }
+
+        await Cart.find({...filter})
             .populate({path: AppConstants.SERVICE})
             .populate({path: AppConstants.STAFF})
             .then((data: IBooking) => {
