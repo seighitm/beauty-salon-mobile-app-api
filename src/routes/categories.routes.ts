@@ -3,6 +3,8 @@ const {FileUploadMiddleware} = require("../middlewares");
 const {CategoryController} = require("../controllers");
 import {body, param} from "express-validator";
 
+router.put("/updateFull/:id", [FileUploadMiddleware.single("photo")], CategoryController.updateFull);
+
 router.post("/createFull", [FileUploadMiddleware.single("photo")], CategoryController.createFull);
 router.post("/", [FileUploadMiddleware.single("photo")], CategoryController.create);
 

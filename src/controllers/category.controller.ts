@@ -1,6 +1,7 @@
 import {NextFunction, Request, Response} from "express";
 import {IMulterRequest} from "../types/request";
 import {ICategory} from "../types/category";
+import {IService} from "../types/service";
 
 const ApiError = require("../error/ApiError");
 const {Category, Service} = require("../models");
@@ -25,7 +26,7 @@ class CategoryController {
 
         const candidateDb = await Category.findOne({name: updatePayload.name})
 
-        if(candidateDb)
+        if (candidateDb)
             return next(ApiError.badRequest("Error! Category with this name already exist!!"))
 
         if (req.body.staffs != [])
@@ -50,6 +51,62 @@ class CategoryController {
             }).catch((err) => {
                 return next(ApiError.badRequest(err.message));
             });
+    }
+
+    async updateFull(req: IMulterRequest, res: Response, next: NextFunction) {
+        const {id} = req.params;
+        const {name, staffs} = req.body;
+
+        let updatePayload: {
+            name?: string,
+            photo?: string,
+            staffs?: string[]
+        } = {
+            name: name,
+            staffs: staffs
+        };
+
+        if (req.file && req.file.filename)
+            updatePayload.photo = req.file.filename as string;
+
+        const candidateDb = await Category.findByIdAndUpdate(id, {$set: {...updatePayload}})
+
+        // if (candidateDb.name != name || candidateDb)
+        //     return next(ApiError.badRequest("Error! Category with this name already exist!!"))
+
+        // if (req.body.deletServices)
+        //     await Service.deleteMany({_id: {$in: req.body.deletServices}})
+
+        if (req.body.services) {
+            const services = JSON.parse(req.body.services)
+            for (let i = 0; i < services.length; i++) {
+                if (services[i]._id) {
+                    await Service.findByIdAndUpdate(services[i]._id, {$set: {...services[i]}})
+                        .catch(err => {
+                            res.send(err)
+                        })
+                } else {
+                    await Service.create({
+                        name: services[i].name,
+                        description: services[i].description,
+                        price: services[i].price,
+                        duration: services[i].duration
+                    }).then((serv: IService) => {
+                        Category.findByIdAndUpdate(id,
+                            {$push: {services: serv._id}},
+                            {new: true, useFindAndModify: false})
+                            .catch(err => {
+                                res.send(err)
+                            })
+                    }).catch((err) => {
+                        return next(ApiError.internal(err.message))
+                    })
+                }
+            }
+        }
+
+        const updatedCategory = await Category.findById(id).populate("services staffs")
+        res.send(updatedCategory)
     }
 
     async create(req: IMulterRequest, res: Response, next: NextFunction) {
